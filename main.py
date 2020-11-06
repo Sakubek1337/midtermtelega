@@ -53,8 +53,8 @@ def welcome(message):
         markup.add(item1)
 
         bot.send_message(message.chat.id,
-                         '''Hello, {0.first_name}!
-I am <b>Game-Bot</b>, you can play with me the game called "🎲Guess the Number🎲".'''.format(
+                         '''Hello, {0.first_name}! I am <b>Game-Bot</b>!
+You can play with me the game called "🎲Guess the Number🎲".'''.format(
                              message.from_user, bot.get_me()),
                          parse_mode='html', reply_markup=markup)
         name = '{0.first_name}'.format(message.from_user)
@@ -64,7 +64,7 @@ I am <b>Game-Bot</b>, you can play with me the game called "🎲Guess the Number
 
         print(message.chat.id)
         print(name + ' has started bot.')
-        bot.send_message(message.chat.id, 'Write command /help to see other commands.')
+        bot.send_message(message.chat.id, 'Write /help to see other commands.')
     else:
         bot.send_message(message.chat.id, 'Game is already started.')
 
@@ -110,104 +110,138 @@ def callback_inline(call):
 
             if call.data == 'start':
                 mark = types.InlineKeyboardMarkup(row_width=2)
-                it1 = types.InlineKeyboardButton("Normal", callback_data='norm')
-                it2 = types.InlineKeyboardButton("Hardcore", callback_data='hard')
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                it1 = types.InlineKeyboardButton("Normal",
+                                                 callback_data='norm')
+                it2 = types.InlineKeyboardButton("Hardcore",
+                                                 callback_data='hard')
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
                 com_start = True
 
                 mark.add(it1, it2)
 
-                bot.send_message(call.message.chat.id, '''Choose the game mode...''', reply_markup=mark)
+                bot.send_message(call.message.chat.id,
+                                 '''Choose the game mode...''',
+                                 reply_markup=mark)
 
             elif call.data == 'norm':
                 mark = types.InlineKeyboardMarkup(row_width=1)
-                it1 = types.InlineKeyboardButton("Level 1 - Nums from 1-5(2 lifes)", callback_data='level1n')
-                it2 = types.InlineKeyboardButton("Level 2 - Nums from 1-10(3 lifes)", callback_data='level2n')
-                it3 = types.InlineKeyboardButton("Level 3 - Nums from 1-20(4 lifes)", callback_data='level3n')
-                it4 = types.InlineKeyboardButton("Level 4 - Nums from 1-35(4 lifes)", callback_data='level4n')
-                it5 = types.InlineKeyboardButton("Level 5 - Nums from 1-60(5 lifes)", callback_data='level5n')
-                it6 = types.InlineKeyboardButton("Level 6 - Nums from 1-100(6 lifes)", callback_data='level6n')
+                it1 = types.InlineKeyboardButton("Nums from 1-5(2 lifes)",
+                                                 callback_data='level1n')
+                it2 = types.InlineKeyboardButton("Nums from 1-10(3 lifes)",
+                                                 callback_data='level2n')
+                it3 = types.InlineKeyboardButton("Nums from 1-20(4 lifes)",
+                                                 callback_data='level3n')
+                it4 = types.InlineKeyboardButton("Nums from 1-35(4 lifes)",
+                                                 callback_data='level4n')
+                it5 = types.InlineKeyboardButton("Nums from 1-60(5 lifes)",
+                                                 callback_data='level5n')
+                it6 = types.InlineKeyboardButton("Nums from 1-100(6 lifes)",
+                                                 callback_data='level6n')
 
                 mark.add(it1, it2, it3, it4, it5, it6)
 
-                bot.send_message(call.message.chat.id, 'Choose the level:', reply_markup=mark)
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.send_message(call.message.chat.id, 'Choose the level:',
+                                 reply_markup=mark)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
 
             if '1n' in call.data:
                 points = 100
                 maxx = 5
                 lifes = 2
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '2n' in call.data:
                 points = 150
                 maxx = 10
                 lifes = 3
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '3n' in call.data:
                 points = 200
                 maxx = 20
                 lifes = 4
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '4n' in call.data:
                 points = 300
                 maxx = 35
                 lifes = 4
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '5n' in call.data:
                 points = 400
                 maxx = 60
                 lifes = 5
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '6n' in call.data:
                 points = 500
                 maxx = 100
                 lifes = 6
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
 
             if call.data == 'hard':
                 mark = types.InlineKeyboardMarkup(row_width=1)
-                it1 = types.InlineKeyboardButton("Level 1 - Nums from 1-2", callback_data='level1h')
-                it2 = types.InlineKeyboardButton("Level 2 - Nums from 1-3", callback_data='level2h')
-                it3 = types.InlineKeyboardButton("Level 3 - Nums from 1-4", callback_data='level3h')
-                it4 = types.InlineKeyboardButton("Level 4 - Nums from 1-5", callback_data='level4h')
-                it5 = types.InlineKeyboardButton("Level 5 - Nums from 1-6", callback_data='level5h')
-                it6 = types.InlineKeyboardButton("Level 6 - Nums from 1-7", callback_data='level6h')
+                it1 = types.InlineKeyboardButton("Level 1 - Nums from 1-2",
+                                                 callback_data='level1h')
+                it2 = types.InlineKeyboardButton("Level 2 - Nums from 1-3",
+                                                 callback_data='level2h')
+                it3 = types.InlineKeyboardButton("Level 3 - Nums from 1-4",
+                                                 callback_data='level3h')
+                it4 = types.InlineKeyboardButton("Level 4 - Nums from 1-5",
+                                                 callback_data='level4h')
+                it5 = types.InlineKeyboardButton("Level 5 - Nums from 1-6",
+                                                 callback_data='level5h')
+                it6 = types.InlineKeyboardButton("Level 6 - Nums from 1-7",
+                                                 callback_data='level6h')
 
                 mark.add(it1, it2, it3, it4, it5, it6)
 
-                bot.send_message(call.message.chat.id, 'Choose the level (YOU HAVE ONLY 1 LIFE!!!):', reply_markup=mark)
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.send_message(call.message.chat.id,
+                                 'Choose the level (YOU HAVE ONLY 1 LIFE!!!):',
+                                 reply_markup=mark)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
 
             if '1h' in call.data:
                 lifes = 1
                 maxx = 2
                 points = 100
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '2h' in call.data:
                 lifes = 1
                 maxx = 3
                 points = 250
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '3h' in call.data:
                 lifes = 1
                 maxx = 4
                 points = 500
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '4h' in call.data:
                 lifes = 1
                 maxx = 5
                 points = 850
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '5h' in call.data:
                 lifes = 1
                 maxx = 6
                 points = 1200
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
             elif '6h' in call.data:
                 lifes = 1
                 maxx = 7
                 points = 1750
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                bot.delete_message(call.message.chat.id,
+                                   call.message.message_id)
 
             if 'level' in call.data and 'n' in call.data:
                 mode = 'norm'
@@ -253,13 +287,15 @@ def callback_inline(call):
                                 onn -= 1
                                 mode = '0'
                                 life = 0
-                                bot.send_message(message.chat.id, 'Game session stopped!')
+                                bot.send_message(message.chat.id,
+                                                 'Game session stopped!')
                             else:
                                 print(zapros, ' is disturbing!!!!!')
                         print('checking...')
                         num = random.randint(1, maxx)
                         print(f'--{num}--')
-                        bot.send_message(call.message.chat.id, """We got a number!
+                        bot.send_message(call.message.chat.id,
+                                         """We got a number!
 Guess🎲""")
                         if lost:
                             pointx = 0
@@ -293,7 +329,8 @@ Guess🎲""")
                                         right -= 1
                                 if right != 1:
                                     if life > 0:
-                                        bot.send_message(message.chat.id, 'Wrong input! Try again!')
+                                        gi = 'Wrong input! Try again!'
+                                        bot.send_message(message.chat.id, gi)
                                 else:
 
                                     guezz = int(message.text)
@@ -303,54 +340,83 @@ Guess🎲""")
 
                                         streak += 1
 
-                                        bot.send_message(message.chat.id, 'Correct! Good job!')
+                                        bot.send_message(message.chat.id,
+                                                         'Correct! Good job!')
                                         if streak % 2 == 0:
                                             idc = message.chat.id
                                             box = score.randombox()
                                             ex = ''
                                             if box == 'Legendary Box':
-                                                score.updateboxes(name, 'lbox', 1)
+                                                score.updateboxes(name, 'lbox',
+                                                                  1)
                                             elif box == 'Golden Box':
                                                 if twiced > 0:
                                                     ex = 'x2 '
-                                                    score.updateboxes(name, 'gbox', 2)
+                                                    score.updateboxes(name,
+                                                                      'gbox',
+                                                                      2)
                                                     twiced -= 1
                                                 else:
-                                                    score.updateboxes(name, 'gbox', 1)
+                                                    score.updateboxes(name,
+                                                                      'gbox',
+                                                                      1)
                                             elif box == 'Platinum Box':
                                                 if twiced > 0:
                                                     ex = 'x2 '
-                                                    score.updateboxes(name, 'pbox', 2)
+                                                    score.updateboxes(name,
+                                                                      'pbox',
+                                                                      2)
                                                     twiced -= 1
                                                 else:
-                                                    score.updateboxes(name, 'pbox', 1)
+                                                    score.updateboxes(name,
+                                                                      'pbox',
+                                                                      1)
                                             elif box == 'Silver Box':
                                                 if twiced > 0:
                                                     ex = 'x2 '
-                                                    score.updateboxes(name, 'sbox', 2)
+                                                    score.updateboxes(name,
+                                                                      'sbox',
+                                                                      2)
                                                     twiced -= 1
                                                 else:
-                                                    score.updateboxes(name, 'sbox', 1)
-                                            bot.send_message(idc, f"""You got {pointx} points and <b>{ex}{box}</b>!
-Keep going!""", parse_mode="html")
+                                                    score.updateboxes(name,
+                                                                      'sbox',
+                                                                      1)
+                                            pep = f"You got {pointx} points"
+                                            pep += f"""and <b>{ex}{box}</b>!
+Keep going!"""
+                                            bot.send_message(idc, pep,
+                                                             parse_mode="html")
 
                                             """time.sleep(0.1)"""
 
                                         else:
-                                            bot.send_message(message.chat.id, f"You got {pointx} points!")
+                                            f = message.chat.id
+                                            k = f"You got {pointx} points!"
+                                            bot.send_message(f, k)
+
                                         life = 0
                                         point += pointx
                                     else:
+                                        l = 'Incorrect! '
                                         life -= 1
                                         if life > 0:
-                                            bot.send_message(message.chat.id, f'Incorrect! {life} lifes remaining.')
+                                            l += f'{life} lifes remaining.'
+                                            bot.send_message(message.chat.id,
+                                                             l)
                                             if guezz > num:
-                                                bot.send_message(message.chat.id, 'Given number is smaller.')
+                                                f = message.chat.id
+                                                k = 'Given number is smaller.'
+                                                bot.send_message(f, k)
                                             else:
-                                                bot.send_message(message.chat.id, 'Given number is bigger.')
+                                                f = message.chat.id
+                                                k = 'Given number is bigger.'
+                                                bot.send_message(f, )
                                         else:
                                             onn -= 1
-                                            bot.send_message(message.chat.id, f'''You lost! Hidden number was {num}.
+                                            f = message.chat.id
+                                            bot.send_message(f, f'''You lost!
+Hidden number was {num}.
 Use command /stop to stop the game.''')
                                             lost = True
 
@@ -441,7 +507,8 @@ Your next {free} boxes will be twiced🎁🎁
 
                 if can:
                     rand = 0
-                    bot.delete_message(call.message.chat.id, call.message.message_id)
+                    f = call.message.chat.id
+                    bot.delete_message(f, call.message.message_id)
                     if which == 'sbox':
                         rand = random.randint(150, 200)
                     elif which == 'gbox':
@@ -451,11 +518,12 @@ Your next {free} boxes will be twiced🎁🎁
                     elif which == 'lbox':
                         rand = random.randint(15000, 20000)
                     score.update(name, rand)
-                    bot.send_message(call.message.chat.id, f'''Congrats! You got {rand} points!''')
+
+                    bot.send_message(f, f'Congrats! You got {rand} points!')
                     score.updateboxes(name, which, (-1))
-                    bot.send_message(call.message.chat.id, f'''/open , /box''')
+                    bot.send_message(f, f'''/open , /box''')
                 else:
-                    bot.send_message(call.message.chat.id, f"You don't have any {chosen}es")
+                    bot.send_message(f, f"You don't have any {chosen}es")
                 print(have)
 
     except Exception as e:
@@ -488,8 +556,9 @@ def welcomew(message):
         rankk = rnk.whatrank(pointz)
         nex = rnk.next_rank(pointz)
         nexr = rnk.whatrank(nex[2])
+        f = message.chat.id
         if nex[0] < 12:
-            bot.send_message(message.chat.id, f'''Your current rank is - {rankk}.
+            bot.send_message(f, f'''Your current rank is - {rankk}.
 {nex[1]} points to {nexr}!''')
 
 
@@ -521,7 +590,9 @@ def opens(message):
         it3 = types.InlineKeyboardButton("Platinum Box", callback_data='pbox')
         it4 = types.InlineKeyboardButton("Legendary Box", callback_data='lbox')
         mark.add(it1, it2, it3, it4)
-        bot.send_message(message.chat.id, """Choose the case you want to open...""", reply_markup=mark)
+        f = message.chat.id
+        bot.send_message(f, """Choose the case you want to open...""",
+                         reply_markup=mark)
 
 
 @bot.message_handler(commands=['box'])
@@ -547,7 +618,6 @@ Silver Boxes - {sboxs}
 Golden Boxes - {gboxs}
 Platinum Boxes - {pboxs}
 Legendary Boxes - {lboxs}
-
 /open - to open box""")
         else:
             bot.send_message(message.chat.id, '''You don\'t have any boxes!''')
@@ -589,36 +659,31 @@ def info(message):
     if name == zapros and not started:
         com_start = False
         started = False
-        infoo = """
-Bot:
+        infoo = """Bot:
 Owner: Mambetkadyrov S.K.
 Made for: Midterm Exam 2020
 Last update: 06.11.2020  01:58 AM
-
 \"Guess the number\":
 Goal: To guess hidden number and test own luck🎰
 Modes: 2
-Levels : 6 * 2 
+Levels : 6 * 2
 TOP players: ✅
 Ranks: ✅
 Lucky Boxes: ✅
 Time tracker: ✅
 Multiplayer (at the same time): 🚫
-
 *Every time you make right guess your streak will increase by 1.
 Every even streak you will get 1 random 🎁.
 If you lose, your streak will be nullified🚫.
-
 Lucky Boxes🎁:
   Drop chances:
   Silver Box - 59%
   Golden Box - 35%
   Platinum Box - 5%
   Legendary Box - 1%
-  
+
 TOP:
-⭐️- means player is a real person
-"""
+⭐️- means player is a real person"""
         bot.send_message(message.chat.id, infoo)
 
 
@@ -631,7 +696,8 @@ def welcomez(message):
     if name == zapros and not started:
         com_start = False
         started = False
-        bot.send_message(message.chat.id, """/score - To see your points and time
+        f = message.chat.id
+        bot.send_message(f, """/score - To see your points and time
 /top - To see current TOP 25 players
 /rank - To see your current rank
 /ranks - To see all ranks
