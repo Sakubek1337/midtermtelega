@@ -8,7 +8,7 @@ import rankz as rnk
 import time
 import sqlite3 as sql
 
-bot = telebot.TeleBot(cfg.TOKEN)
+bot = telebot.TeleBot('TOKEN')
 
 #  necessary variables
 twiced = 0
