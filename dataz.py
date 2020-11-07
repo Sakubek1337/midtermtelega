@@ -4,6 +4,16 @@ import sqlite3 as sql
 #  baza = sql.connect(':memory:')
 
 #  c = baza.cursor()
+def is_real(nickname):
+    baza = sql.connect('gtnp.db')
+    c = baza.cursor()
+    c.execute("SELECT * FROM real WHERE nick=:nick", {'nick': nickname})
+    isreal = c.fetchone()
+    if isreal is None:
+        return 'false'
+    else:
+        return 'true'
+
 
 def get_playerbox(nickname, s):
     s.execute("SELECT * FROM boxes WHERE nick=:nick", {'nick': nickname})
@@ -18,6 +28,11 @@ def get_player(nickname, s):
 def get_playertime(nick, c):
     c.execute("SELECT * FROM time WHERE nick=:nick", {'nick': nick})
     return c.fetchone()
+
+
+def get_playertw(nickname, s):
+    s.execute("SELECT * FROM twicing WHERE nick=:nick", {'nick': nickname})
+    return s.fetchone()
 # ADD ----
 
 
@@ -28,7 +43,14 @@ def add_player(nickname, s, base):
 
 def add_playerbox(nickname, s, base):
     with base:
-        s.execute("INSERT INTO boxes VALUES (:nick, 0, 0, 0, 0)", {'nick': nickname})
+        s.execute("INSERT INTO boxes VALUES (:nick, 0, 0, 0, 0)",
+                  {'nick': nickname})
+
+
+def add_playertw(nickname, s, base):
+    with base:
+        s.execute("INSERT INTO twicing VALUES (:nick, 0)",
+                  {'nick': nickname})
 
 
 def add_time(nick, c, base):
@@ -43,19 +65,23 @@ def update_boxes(nicknam, box_name, amount, s, base):
         if box_name == 'sbox':
             current_boxes = playerboxes[1]
             added = current_boxes + amount
-            s.execute("UPDATE boxes SET sbox = :sbox WHERE nick=:nick", {'nick': nicknam, 'sbox': added})
+            s.execute("UPDATE boxes SET sbox = :sbox WHERE nick=:nick",
+                      {'nick': nicknam, 'sbox': added})
         elif box_name == 'gbox':
             current_boxes = playerboxes[2]
             added = current_boxes + amount
-            s.execute("UPDATE boxes SET gbox = :gbox WHERE nick=:nick", {'nick': nicknam, 'gbox': added})
+            s.execute("UPDATE boxes SET gbox = :gbox WHERE nick=:nick",
+                      {'nick': nicknam, 'gbox': added})
         elif box_name == 'pbox':
             current_boxes = playerboxes[3]
             added = current_boxes + amount
-            s.execute("UPDATE boxes SET pbox = :pbox WHERE nick=:nick", {'nick': nicknam, 'pbox': added})
+            s.execute("UPDATE boxes SET pbox = :pbox WHERE nick=:nick",
+                      {'nick': nicknam, 'pbox': added})
         elif box_name == 'lbox':
             current_boxes = playerboxes[4]
             added = current_boxes + amount
-            s.execute("UPDATE boxes SET lbox = :lbox WHERE nick=:nick", {'nick': nicknam, 'lbox': added})
+            s.execute("UPDATE boxes SET lbox = :lbox WHERE nick=:nick",
+                      {'nick': nicknam, 'lbox': added})
 
 
 def update_points(nicknam, points, s, base):
@@ -63,12 +89,23 @@ def update_points(nicknam, points, s, base):
         player = get_player(nicknam, s)
         current_pointz = player[1]
         added = current_pointz + points
-        s.execute("UPDATE players SET points = :points WHERE nick=:nick", {'nick': nicknam, 'points': added})
+        s.execute("UPDATE players SET points = :points WHERE nick=:nick",
+                  {'nick': nicknam, 'points': added})
 
 
 def update_pointz(nicknam, points, s):
     #  sets exactly as points
-    s.execute("UPDATE players SET points = :points WHERE nick=:nick", {'nick': nicknam, 'points': points})
+    s.execute("UPDATE players SET points = :points WHERE nick=:nick",
+              {'nick': nicknam, 'points': points})
+
+
+def update_tw(nicknam, newtws, s, base):
+    with base:
+        player = get_playertw(nicknam, s)
+        current_tws = player[1]
+        added = current_tws + newtws
+        s.execute("UPDATE twicing SET twiced = :twiced WHERE nick=:nick",
+                  {'nick': nicknam, 'twiced': added})
 
 
 def update_time(nick, hours, mins, seconds, c, base):
@@ -90,9 +127,12 @@ def update_time(nick, hours, mins, seconds, c, base):
         added_minutes -= newhours * 60
         added_hours += newhours
 
-        c.execute('''UPDATE time SET hours = :hours WHERE nick =:nick''', {'nick': nick, 'hours': added_hours})
-        c.execute('''UPDATE time SET mins = :mins WHERE nick =:nick''', {'nick': nick, 'mins': added_minutes})
-        c.execute('''UPDATE time SET seconds = :seconds WHERE nick =:nick''', {'nick': nick, 'seconds': added_seconds})
+        c.execute('''UPDATE time SET hours = :hours WHERE nick =:nick''',
+                  {'nick': nick, 'hours': added_hours})
+        c.execute('''UPDATE time SET mins = :mins WHERE nick =:nick''',
+                  {'nick': nick, 'mins': added_minutes})
+        c.execute('''UPDATE time SET seconds = :seconds WHERE nick =:nick''',
+                  {'nick': nick, 'seconds': added_seconds})
 #  REMOVE ----
 
 
