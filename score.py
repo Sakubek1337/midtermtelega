@@ -1,5 +1,6 @@
 import sqlite3 as sql
-from dataz import get_player, update_points, add_player, remove_player, get_playerbox, add_playerbox, update_boxes
+from dataz import remove_player, get_playerbox, add_playerbox, update_boxes
+from dataz import get_player, update_points, add_player
 import dataz
 import rankz as rnk
 import telebot
@@ -34,11 +35,22 @@ def boxes(nick):
     return boxez
 
 
+def person(nick):
+    base = sql.connect('gtnp.db')
+    c = base.cursor()
+    verd = dataz.is_real(nick)
+    if verd == 'false':
+        with base:
+            if nick != 'Sakubek':
+                c.execute("INSERT INTO real VALUES (:nick,)", {'nick': nick})
+
+
 def register(nick):
     base = sql.connect('gtnp.db')
     c = base.cursor()
     score = get_player(nick, c)
     hasbox = get_playerbox(nick, c)
+    hastw = dataz.get_playertw(nick, c)
     hastime = dataz.get_playertime(nick, c)
     if score is None:
         add_player(nick, c, base)
@@ -46,6 +58,8 @@ def register(nick):
         add_playerbox(nick, c, base)
     if hastime is None:
         dataz.add_time(nick, c, base)
+    if hastw is None:
+        dataz.add_playertw(nick, c, base)
 
 
 def pointsgtn(name):
@@ -87,32 +101,54 @@ def timeboard():
 def telboard():
     base = sql.connect('gtnp.db')
     c = base.cursor()
-    reals = []
-    for i in c.execute("""SELECT * FROM real ORDER BY nick"""):
-        reals.append(i[0])
-    listz = '🏆Top 25 players: \n'
+
+    listz = '🌎World\'s Top 30 players: \n'
     i = 1
     for row in c.execute('SELECT * FROM players ORDER BY points DESC'):
-        if i < 26:
+        if i < 31:
             imya = row[0]
-            star = ''
-            if imya in reals:
-                star = "⭐️"
+
             if i == 1:
-                listz += f'🥇 {imya} — {row[1]} pts{star}\n'
+                listz += f'🥇 {imya} — {row[1]} pts\n'
                 i += 1
             elif i == 2:
-                listz += f'🥈 {imya} — {row[1]} pts{star}\n'
+                listz += f'🥈 {imya} — {row[1]} pts\n'
                 i += 1
             elif i == 3:
-                listz += f'🥉 {imya} — {row[1]} pts{star}\n'
+                listz += f'🥉 {imya} — {row[1]} pts\n'
                 i += 1
             else:
-                listz += f'{i}. {imya} — {row[1]} pts{star}\n'
+                listz += f'{i}. {imya} — {row[1]} pts\n'
                 i += 1
         else:
             break
     base.close()
+    return listz
+
+
+def localboard():
+    base = sql.connect('gtnp.db')
+    c = base.cursor()
+    listz = '🇰🇬Local Top players: \n'
+    reals = []
+    for g in c.execute("""SELECT * FROM real ORDER BY nick"""):
+        reals.append(g[0])
+    i = 1
+    for row in c.execute('SELECT * FROM players ORDER BY points DESC'):
+        if row[0] in reals:
+            imya = row[0]
+            if i == 1:
+                listz += f'🥇 {imya} — {row[1]} pts\n'
+                i += 1
+            elif i == 2:
+                listz += f'🥈 {imya} — {row[1]} pts\n'
+                i += 1
+            elif i == 3:
+                listz += f'🥉 {imya} — {row[1]} pts\n'
+                i += 1
+            else:
+                listz += f'{i}. {imya} — {row[1]} pts\n'
+                i += 1
     return listz
 
 
@@ -141,4 +177,11 @@ def updatetime(nick, hours, mins, secs):
     base = sql.connect('gtnp.db')
     c = base.cursor()
     dataz.update_time(nick, hours, mins, secs, c, base)
+    base.close()
+
+
+def updatetw(nick, tws):
+    base = sql.connect('gtnp.db')
+    c = base.cursor()
+    dataz.update_tw(nick, tws, c, base)
     base.close()
